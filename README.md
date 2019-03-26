@@ -1,6 +1,6 @@
 # Numerical Techniques
 
-> A collection of numerical methods taught as a part of physics coursework
+> A collection of numerical methods taught as a part of coursework.
 
 ## Repository Structure
 
@@ -9,22 +9,26 @@
     --| modules
         -- __init__.py
         -- module_foo.py
-        -- module_bar.py
+        -- ...
     --| demos
-        -- module_foo_demo.py
-        -- module_bar_demo.py
+        -- demo_module_foo.py
+        -- ...
 ```
 
-## Executing the Demos
+## Running the Demos
 
 ### Python
 
-Navigate to the ```python``` folder in command line:
+- Install Python using the [Anaconda Distribution](https://www.anaconda.com/distribution/) for the relevant operating system.
+
+- After installation, download this repository as .zip and extract it to a preferred location.
+
+- Navigate to the ```python``` folder in command line or terminal (replace ```path\to``` by the location where the repository is extracted):
 ```
 cd path\to\numerical-techniques\python
 ```
-Replace ```path\to``` by the location where the repository is extracted. Execute the desired demo file using:
+- Execute the desired demo file using (replace ```module_foo_demo.py``` with the required demo file):
 ```
 python demos\module_foo_demo.py
 ```
-Replace ```module_foo_demo.py``` with the relevant filename.
+
