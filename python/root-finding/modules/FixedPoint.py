@@ -3,8 +3,6 @@ A collection of methods to find roots of a function using Newton-Raphson Method.
 """
 
 __all__ = ["find_root_uni"]
-
-from decimal import Decimal
     
 def find_root_uni(g, xi, err=1e-6, imax=1e6):
     """
@@ -27,33 +25,29 @@ def find_root_uni(g, xi, err=1e-6, imax=1e6):
         The root and the iteration count with error string.
     """
 
-    # redefine data-type to handle large numbers
-    xi = Decimal(xi)
-    err = Decimal(err)
-    imax = Decimal(imax)
-
     # initialize values
-    ic = Decimal(0)
+    ic = 0
 
     # check initial values
-    if (Decimal(g(xi)) == xi):
-        return float(xi), ic, None
+    if (g(xi) == xi):
+        return xi, ic, None
 
-    # iterate till relative error reaches threshold
+    # iterate till maximum iterations is reached or relative error reaches threshold
     while True: 
         ic += 1
 
+        # check iteration threshold
+        if (ic >= imax):
+            return None, ic, "Maximum iterations reached."
+
         # update value
-        xnew = Decimal(g(xi))
+        xnew = g(xi)
 
         # check relative error
         curr_diff = abs(xnew - xi)
         max_diff = abs(xi) * err
         xi = xnew
         if (curr_diff < max_diff):
-            return float(xi), ic, None
+            return xi, ic, None
 
-        # check iteration threshold
-        if (ic > imax):
-            return None, ic, "Maximum iterations reached."
     return xi, ic, None

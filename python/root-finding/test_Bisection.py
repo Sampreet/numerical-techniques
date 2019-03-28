@@ -1,5 +1,4 @@
 from modules import Bisection
-from decimal import Decimal
 
 xi = 0.5        # initial value
 xf = 2          # final value
@@ -10,7 +9,7 @@ def fn(x):
     """
     Given function.
     """
-    return Decimal(x)**3 + 94*Decimal(x)**2 - 389*Decimal(x) + 294
+    return x**3 + 94*x**2 - 389*x + 294
 
 # find root in a given bracket using Bisection Method
 root, ic, msg = Bisection.find_root_in_bracket(fn, xi, xf, err)

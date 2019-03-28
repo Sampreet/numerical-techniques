@@ -27,7 +27,7 @@ The folder structure of the repository is as follows:
     --  ...
 ```
 
-Execute the desired demo file using (replace ```demo_module_foo.py``` with the required demo file):
+Execute the desired test file using (replace ```test_module_foo.py``` with the test filename):
 ```
-python module-group\demo_module_foo.py
+python module-group\test_module_foo.py
 ```

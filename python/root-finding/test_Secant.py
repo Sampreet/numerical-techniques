@@ -1,5 +1,4 @@
 from modules import Secant
-from decimal import Decimal
 import math
 
 xi = 1          # initial value
@@ -10,13 +9,13 @@ def fn(x):
     """
     Given function.
     """
-    return math.exp(Decimal(x)*2) - math.exp(Decimal(x)) - 2
+    return math.exp(x*2) - math.exp(x) - 2
 
 def df(x): 
     """
     Derivative of given function.
     """
-    return 2*math.exp(Decimal(x)*2) - math.exp(Decimal(x))
+    return 2*math.exp(x*2) - math.exp(x)
 
 # find root in a given bracket using Secant Method
 root, ic, msg = Secant.find_root_uni(fn, xi, xf, err, imax)

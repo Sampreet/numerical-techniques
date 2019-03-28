@@ -1,5 +1,4 @@
 from modules import FalsePosition
-from decimal import Decimal
 import math
 
 xi = 0          # initial value
@@ -11,7 +10,7 @@ def fn(x):
     """
     Given function.
     """
-    return math.exp(Decimal(x)*2) - math.exp(Decimal(x)) - 2
+    return math.exp(x*2) - math.exp(x) - 2
 
 # find root in a given bracket using False Position Method
 root, ic, msg = FalsePosition.find_root_in_bracket(fn, xi, xf, err)
