@@ -1,5 +1,5 @@
 """
-A collection of methods to find roots of a function using Newton-Raphson Method.
+A collection of methods to find roots of a function using Fixed Point Method.
 """
 
 __all__ = ["find_root_uni"]

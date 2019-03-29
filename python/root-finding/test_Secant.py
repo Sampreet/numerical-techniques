@@ -17,7 +17,7 @@ def df(x):
     """
     return 2*math.exp(x*2) - math.exp(x)
 
-# find root in a given bracket using Secant Method
+# find root using Secant Method
 root, ic, msg = Secant.find_root_uni(fn, xi, xf, err, imax)
 if root != None:
     print("Secant Method:\n\tRoot with initial value {xi}: {x0}\n\tFunction Value: {fx0}\n\tIterations: {ic}".format(xi=xi, x0=root, fx0=fn(root), ic=ic))

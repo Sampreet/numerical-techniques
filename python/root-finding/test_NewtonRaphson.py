@@ -16,7 +16,7 @@ def df(x):
     """
     return 2*math.exp(x*2) - math.exp(x)
 
-# find root in a given bracket using Newton-Raphson Method
+# find root using Newton-Raphson Method
 root, ic, msg = NewtonRaphson.find_root_uni(fn, df, xi, err, imax)
 if root != None:
     print("Newton-Raphson Method:\n\tRoot with initial value {xi}: {x0}\n\tFunction Value: {fx0}\n\tIterations: {ic}".format(xi=xi, x0=root, fx0=fn(root), ic=ic))
@@ -44,9 +44,9 @@ def dgdy(X):
 xi = 1
 yi = 1
 
-# find root in a given bracket using Newton-Raphson Method
-roots, ic, msg = NewtonRaphson.find_root_multi([f, g], [[dfdx,dfdy],[dgdx,dgdy]], [xi, yi], err=1e-6, imax=10)
+# find root using Newton-Raphson Method
+root, ic, msg = NewtonRaphson.find_root_multi([f, g], [[dfdx,dfdy],[dgdx,dgdy]], [xi, yi], err=1e-6, imax=1000)
 if root != None:
-    print("Newton-Raphson Method:\n\tRoot with initial value ({xi}, {yi}): {roots}\n\tFunction Value: ({f}, {g})\n\tIterations: {ic}".format(xi=xi, yi=yi, roots=roots, f=f(roots), g=g(roots), ic=ic))
+    print("Newton-Raphson Method:\n\tRoot with initial value ({xi}, {yi}): {root}\n\tFunction Value: ({f}, {g})\n\tIterations: {ic}".format(xi=xi, yi=yi, root=root, f=f(root), g=g(root), ic=ic))
 else:
-    print("Newton-Raphson Method:\n\tNo root found with given initial value.\n\t{msg}\n\tIterations: {ic}".format(msg=msg, ic=ic))
+    print("Newton-Raphson Method:\n\tNo root found with given initial values.\n\t{msg}\n\tIterations: {ic}".format(msg=msg, ic=ic))

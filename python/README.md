@@ -23,7 +23,7 @@ The folder structure of the repository is as follows:
         -- __init__.py
         -- module_foo.py
         -- ...
-    --  demo_module_foo.py
+    --  test_module_foo.py
     --  ...
 ```
 

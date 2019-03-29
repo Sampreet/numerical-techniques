@@ -19,7 +19,7 @@ def find_root_uni(fn, df, xi, err=1e-6, imax=1e6):
     xi : float
         Initial point of selection.
     err : float (optional)
-        Threshold of relative error.
+        Relative error threshold.
     imax : int (optional)
         Maximum number of iterations to consider.
 
@@ -60,7 +60,7 @@ def find_root_uni(fn, df, xi, err=1e-6, imax=1e6):
 
     return xi, ic, None
 
-def find_root_multi(Fn, Dn, X, err=1e-6, imax=1e6):
+def find_root_multi(Fn, Dn, X, err=1, imax=1e6):
     """
     Find the (approximate) root of a given system of multivariate function using Newton-Raphson Method.
 
@@ -73,7 +73,7 @@ def find_root_multi(Fn, Dn, X, err=1e-6, imax=1e6):
     X : list (float)
         Initial point of selection.
     err : float (optional)
-        Threshold of relative error.
+        Margin of error.
     imax : int (optional)
         Maximum number of iterations to consider.
 
@@ -93,6 +93,15 @@ def find_root_multi(Fn, Dn, X, err=1e-6, imax=1e6):
         # check iteration threshold
         if (ic >= imax):
             return X, ic, "Maximum iteration reached."
+
+        # check convergence
+        is_converging = True
+        for i in range(0, len(Dn)):
+            if sum(list(map(lambda dn: dn(X), Dn[i]))) > err:
+                is_converging = False
+                break
+        if (is_converging):
+            return X, ic, None
         
         # obtain partial jacobian matrices for each variable 
         Det_D = list(map(lambda index: get_jacobian_determinant(Fn, Dn, X, index), list(range(0, len(Fn) + 1))))
