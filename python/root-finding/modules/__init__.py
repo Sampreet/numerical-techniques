@@ -1,1 +1,1 @@
-__all__ = ["Bisection", "FalsePosition", "FixedPoint", "NewtonRaphson", "Secant", "GaussianElimination", "GaussJordan"]
+__all__ = ["Bisection", "FalsePosition", "FixedPoint", "NewtonRaphson", "Secant", "GaussianElimination", "GaussJordan", "LUDecomposition"]

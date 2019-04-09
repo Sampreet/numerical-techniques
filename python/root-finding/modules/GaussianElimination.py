@@ -24,30 +24,30 @@ def solve_using_upper_triangle(A, b):
     """
 
     # initialize values
-    ops = 0
-    mat = np.array(A, dtype=np.float)
-    b = np.array(b, dtype=np.float)
-    size = len(b)
+    ops = 0                             # number of operations
+    mat = np.array(A, dtype=np.float)   # coefficient matrix as numpy array
+    b = np.array(b, dtype=np.float)     # constant vector as numpy array
+    dim = len(b)                       # number of variables
 
     # form upper-triangular matrix
-    for j in range(0, size):
+    for j in range(0, dim):
         divisor = mat[j][j]
         if (divisor != 0):
             mat[j] = np.array(list(map(lambda ele: ele / divisor, mat[j])), dtype=np.float)
             b[j] /= divisor
-            ops += size + 1
-        for i in range(j+1, size):
+            ops += dim + 1
+        for i in range(j+1, dim):
             multiplier = mat[i][j]
-            for k in range(0, size):
+            for k in range(0, dim):
                 mat[i][k] -= mat[j][k] * multiplier 
             b[i] -= b[j] * multiplier
-            ops += size + 1
+            ops += dim + 1
 
     # find root by reverse substitution
     x = np.array(b, dtype=np.float)
-    for i in range(1, size):
-        for k in range(size - 1 - i, size):
-            x[size - 1 - i] -= mat[size - 1 - i][k] * x[k]
+    for i in range(1, dim):
+        for k in range(dim - 1 - i, dim):
+            x[dim - 1 - i] -= mat[dim - 1 - i][k] * x[k]
 
     return x.tolist(), ops, None
 
