@@ -2,7 +2,7 @@
 
 ## Installation
 
-Install `Python 3.6+` using the [Anaconda Distribution](https://www.anaconda.com/distribution/) for the relevant operating system.
+Install `Python 3.7+` using the [Anaconda Distribution](https://www.anaconda.com/distribution/) for the relevant operating system.
 
 ## Extraction
 
