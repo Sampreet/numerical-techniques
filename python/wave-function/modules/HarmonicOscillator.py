@@ -62,34 +62,32 @@ def get_ODE_solution(range_x, step_size_x, U_0, eps):
 
     return X, Y
 
-def get_solutions(range_x, range_psi_0, range_dpsidx_0, range_eps, step_size_x=1e-2, step_size_psi_0=1, step_size_dpsidx_0=1, step_size_eps=1e-2, margin_zero=1e-2, display=False, debug=True):
+def get_solutions(eps_min, eps_max, step_size_eps_ini=1e-2, step_size_eps_max=1e-6, threshold_eps=1, threshold_zero=1e-4, range_x=5, step_size_x=1e-2, display=False, debug=False):
     '''
     Main function to get the solutions of the Harmonic Oscillator model for the given parameters
 
     Parameters
     ----------
-    range_x : float
-        Range of the x-axis 
-    range_psi_0 : float
-        Range of the initial value psi(0)
-    range_dpsidx_0 : float
-        Range of the initial value psi'(0)
-    range_eps : float
-        Range of the dimensionless energy
+    eps_min : float
+        Starting value of the dimensionless energy, epsilon
+    eps_max : float
+        Ending value of epsilon
+    step_size_eps_ini : float (optional)
+        Initial step-size for iteration of epsilon (default is 1e-2)
+    step_size_eps_max : float (optional)
+        Maximum step-size for iteration of epsilon (default is 1e-6)
+    threshold_eps : float (optional)
+        Threshold to decrease step-size of epsilon (default is 1)
+    threshold_zero : float (optional)
+        Threshold to consider a zero of the wavefunction (default is 1e-2)
+    range_x : float (optional)
+        Range of the x-axis (default is 5)
     step_size_x : float (optional)
         Precision of the x-axis (default is 1e-2)
-    step_size_psi_0 : float (optional)
-        Step size for iteration of the initial value psi(0) (default is 1)
-    step_size_dpsidx_0 : float (optional)
-        Step size for iteration of the initial value psi'(0) (default is 1)
-    step_size_eps : float (optional)
-        Step size for iteration of the dimensionless energy (default is 1e-2)
-    margin_zero : float (optional)
-        Margin of error to consider while checking the zero of the wavefunction (default is 1e-2)
     display : boolean (optional)
         Option to display the plots during iteration (default is False)
     debug : boolean (optional)
-        Option to debug the iteration process (default is True)
+        Option to debug the iteration process (default is False)
 
     Returns
     -------
@@ -98,6 +96,7 @@ def get_solutions(range_x, range_psi_0, range_dpsidx_0, range_eps, step_size_x=1
     '''
 
     if display:
+        # initialize the figure
         plt.show()
         axes = plt.gca()
         axes.set_xlim(-1* range_x, range_x)
@@ -108,46 +107,91 @@ def get_solutions(range_x, range_psi_0, range_dpsidx_0, range_eps, step_size_x=1
         plt.title("Harmonic Oscillator")
 
     # initialize variables
-    sol = []
-    ops = 0
+    sol = []    # solution array
+    ops = 0     # iteration count
 
-    if debug:
-        print("Starting iterations...")
+    print("Starting iterations...")
 
-    for i in range(0, int(range_psi_0/step_size_psi_0) + 1):
-        psi_0 = i * step_size_psi_0
-        for j in range(0, int(range_dpsidx_0/step_size_dpsidx_0) + 1):
-            dpsidx_0 = j * step_size_dpsidx_0
-            if (psi_0 == 0 and dpsidx_0 == 0):
-                continue
-            for k in range(0, int(range_eps/step_size_eps) + 1):
-                eps = k * step_size_eps
-                # update iteration number
+    for i in range(0, 2):
+        psi_0 = i 
+        dpsidx_0 = (psi_0 + 1) % 2
+        for j in range(0, int((eps_max - eps_min)/step_size_eps_ini) + 1):
+            eps = eps_min + j * step_size_eps_ini
+            # prepare the vector for scipy.integrate.odeint
+            U_0 = [psi_0, dpsidx_0]
+            # get solution using scipy.integrate.odeint
+            X, Y = get_ODE_solution(range_x, step_size_x, U_0, eps)
+            
+            y_prev = abs(Y[0])
+            # if the end values are both near the threshold for change of step size
+            if (abs(Y[-1]) < threshold_eps and abs(Y[0]) < threshold_eps):
+                # initialize multiplier to decrease step size
+                multiplier = 1e-1
+                temp_ops = 0
+                temp_eps = eps
+                # while step size is more than maximum step size for epsilon
+                while (temp_eps < eps + step_size_eps_ini and abs(multiplier) >= step_size_eps_max):
+                    # update iteration count
+                    temp_ops += 1
+                    # get solution using scipy.integrate.odeint
+                    X, Y = get_ODE_solution(range_x, step_size_x, U_0, temp_eps)
+
+                    if debug:
+                        print("\rDebug: Iteration #{ops}:\tpsi(0) = {psi_0}\t(d/dx)psi(0) = {dpsidx_0}\tepsilon = {eps}\tpsi({range_x}) = {psi_x}".format(ops=ops + temp_ops, psi_0=psi_0, dpsidx_0=dpsidx_0, eps=temp_eps, range_x=range_x, psi_x=Y[0]), end="\t\t\t\n")
+
+                    # if the ends of the obtained solution are close to zero, accept it as a solution of the Harmonic Oscillator
+                    if (abs(Y[-1]) < threshold_zero and abs(Y[0]) < threshold_zero):
+
+                        if debug:
+                            print("\rDebug: Solution: \tpsi(0) = {psi_0}\t(d/dx)psi(0) = {dpsidx_0}\tepsilon = {eps}\tpsi({range_x}) = {psi_x}".format(psi_0=psi_0, dpsidx_0=dpsidx_0, eps=temp_eps, range_x=range_x, psi_x=Y[0]), end="\t\t\t\n")
+
+                        # update the array
+                        sol.append([psi_0, dpsidx_0, temp_eps])
+                        break
+
+                    if display:
+                        # update the figure
+                        line.set_xdata(X)
+                        line.set_ydata(Y)
+                        plt.suptitle("psi(0) = {psi_0} (d/dx)psi(0)={dpsidx_0} epsilon={eps}".format(psi_0=psi_0, dpsidx_0=dpsidx_0, eps=temp_eps))
+                        plt.draw()
+                        plt.pause(1e-6)
+
+                    print("\rIteration #{ops}:\tpsi(0) = {psi_0}\t(d/dx)psi(0) = {dpsidx_0}\tepsilon = {eps}".format(ops=ops + temp_ops, psi_0=psi_0, dpsidx_0=dpsidx_0, eps=temp_eps), end="\t\t\t")
+
+                    # if new value is more, increase precision and reverse iteration direction
+                    if y_prev < abs(Y[0]):
+                        if temp_ops != 2:
+                            multiplier *= 1e-1
+                        multiplier *= -1
+                    # update values
+                    temp_eps += multiplier * step_size_eps_ini
+                    y_prev = abs(Y[0])
+
+                    if debug and not (temp_eps < eps + step_size_eps_ini and abs(multiplier) > 1e-6):
+                        print("\rDebug: Maximum iterations completed for epsilon = {}.".format(eps), end="\t\t\t\n")
+                # update iteration count
+                ops += temp_ops
+            else:
+                # update iteration count
                 ops += 1
-                # prepare the vector for scipy.integrate.odeint
-                U_0 = [psi_0, dpsidx_0]
-                # get solution using scipy.integrate.odeint
-                X, Y = get_ODE_solution(range_x, step_size_x, U_0, eps)
-                # if the ends of the obtained solution are close to zero, accept it as a solution of the Harmonic Oscillator
-                if (abs(Y[-1]) < margin_zero and abs(Y[0]) < margin_zero):
-                    sol.append([psi_0, dpsidx_0, eps])
 
                 if display:
+                    # update the figure
                     line.set_xdata(X)
                     line.set_ydata(Y)
                     plt.suptitle("psi(0) = {psi_0} (d/dx)psi(0)={dpsidx_0} epsilon={eps}".format(psi_0=psi_0, dpsidx_0=dpsidx_0, eps=eps))
                     plt.draw()
                     plt.pause(1e-6)
 
-                if debug:
-                    print("\rIteration #{ops}:\tpsi(0) = {psi_0}\t(d/dx)psi(0)={dpsidx_0}\tepsilon={eps}".format(ops=ops, psi_0=psi_0, dpsidx_0=dpsidx_0, eps=eps), end="")
+                print("\rIteration #{ops}:\tpsi(0) = {psi_0}\t(d/dx)psi(0) = {dpsidx_0}\tepsilon = {eps}".format(ops=ops, psi_0=psi_0, dpsidx_0=dpsidx_0, eps=eps), end="\t\t\t")
 
-    if debug:
-        print("\r....................................................................................................")
-        print("{ops} iterations completed. {num} solutions obtained.".format(ops=ops, num=len(sol)))
+    print("\r....................................................................................................")
+    print("{ops} iterations completed. {num} solutions obtained.".format(ops=ops, num=len(sol)))
+    plt.close()
     return sol
 
-def display_solutions(sol, range_x, step_size_x=1e-2, debug=True):
+def display_solutions(sol, range_x, step_size_x=1e-2):
     '''
     Helper function to display the solutions obtained using the main function
 
@@ -159,17 +203,13 @@ def display_solutions(sol, range_x, step_size_x=1e-2, debug=True):
         Range of the x-axis 
     step_size_x : float (optional)
         Precision of the x-axis (default is 1e-2)
-    debug : boolean (optional)
-        Option to debug the plotting process (default is True)
     '''
 
-    if debug:
-        print("Plotting solutions...")
-        print("\tGraph #\t|\tpsi(0)\t|(d/dx)psi(0)\t|\tepsilon")
+    print("Plotting solutions...")
+    print("\tGraph #\t|\tpsi(0)\t|(d/dx)psi(0)\t|\tepsilon")
 
     for i in range(0, len(sol)):
-        if debug:
-            print("\t{num}\t|\t{psi_0}\t|\t{dpsidx_0}\t|\t{eps}".format(num=i+1, psi_0=sol[i][0], dpsidx_0=sol[i][1], eps=sol[i][2]))
+        print("\t{num}\t|\t{psi_0}\t|\t{dpsidx_0}\t|\t{eps}".format(num=i+1, psi_0=sol[i][0], dpsidx_0=sol[i][1], eps=sol[i][2]))
         eps = sol[i][2]
         # prepare the vector for scipy.integrate.odeint
         U_0 = [sol[i][0], sol[i][1]]
@@ -183,5 +223,4 @@ def display_solutions(sol, range_x, step_size_x=1e-2, debug=True):
         plt.plot(X, Y)
         plt.show()
 
-    if debug:
-        print("{num} graphs plotted.".format(num=len(sol)))
+    print("{num} graphs plotted.".format(num=len(sol)))
