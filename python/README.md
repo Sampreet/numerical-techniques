@@ -18,16 +18,15 @@ cd path\to\numerical-techniques-master\python\
 The folder structure of the repository is as follows:
 
 ```
---| module-group
-    --| modules
-        -- __init__.py
-        -- module_foo.py
-        -- ...
-    --  test_module_foo.py
-    --  ...
+--| group_foo
+    -- __init__.py
+    -- ModuleBar.py
+    -- ...
+--  test_group_foo_ModuleBar.py
+--  ...
 ```
 
-Execute the desired test file using (replace ```test_module_foo.py``` with the test filename):
+Execute the desired test file using (replace ```test_group_foo_ModuleBar.py``` with the test filename):
 ```
-python module-group\test_module_foo.py
+python test_group_foo_ModuleBar.py
 ```

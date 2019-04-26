@@ -1,4 +1,4 @@
-from modules import GaussJordan
+from root_finding import GaussJordan
 import math
 
 # given matrix

@@ -1,4 +1,4 @@
-from modules import LUDecomposition
+from root_finding import LUDecomposition
 
 # given matrix
 A = [[2, 4, -6], [1, 3, 1], [2, -4, -2]]

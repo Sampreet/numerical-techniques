@@ -1,5 +1,22 @@
 """
-A collection of techniques to find eigenfunctions of the Harmonic Oscillator model using scipy.integrate.odeint.
+HarmonicOscillator1D
+====================
+Created on 2019-04-13 by Sampreet Kalita
+
+Functionality
+-------------
+A collection of functions to find solutions of the 1-D Harmonic Oscillator model using scipy.integrate.odeint.
+Generates solutions for different values of the dimension-less energy in a given range of x.
+
+Code Improvements
+-----------------
+Update #4 (2019-04-26): Changed to derivative-based adaptation instead of value-based. Minor fixes.
+
+Update #3 (2019-04-23): Implemented 'adaptive' wag-the-dog by increasing precision and implementing directionality. Removed 'for' loops for psi_0 and dpsidx_0.
+
+Update #2 (2019-04-18): Alloted unit step-size for psi_0 and dpsidx_0.
+
+Update #1 (2019-04-16): Separated get_solutions and display_solutions functions.
 """
 
 __all__ = ["get_solutions", "display_solutions"]
@@ -122,15 +139,15 @@ def get_solutions(eps_min, eps_max, step_size_eps_ini=1e-2, step_size_eps_max=1e
             # get solution using scipy.integrate.odeint
             X, Y = get_ODE_solution(range_x, step_size_x, U_0, eps)
             
-            y_prev = abs(Y[0])
             # if the end values are both near the threshold for change of step size
             if (abs(Y[-1]) < threshold_eps and abs(Y[0]) < threshold_eps):
                 # initialize multiplier to decrease step size
                 multiplier = 1e-1
                 temp_ops = 0
                 temp_eps = eps
+                dydx_prev = (abs(Y[0]) - abs(Y[1]))/abs(X[0]-X[1])
                 # while step size is more than maximum step size for epsilon
-                while (temp_eps < eps + step_size_eps_ini and abs(multiplier) >= step_size_eps_max):
+                while (temp_eps < eps + step_size_eps_ini and abs(multiplier*step_size_eps_ini) >= step_size_eps_max):
                     # update iteration count
                     temp_ops += 1
                     # get solution using scipy.integrate.odeint
@@ -160,13 +177,14 @@ def get_solutions(eps_min, eps_max, step_size_eps_ini=1e-2, step_size_eps_max=1e
                     print("\rIteration #{ops}:\tpsi(0) = {psi_0}\t(d/dx)psi(0) = {dpsidx_0}\tepsilon = {eps}".format(ops=ops + temp_ops, psi_0=psi_0, dpsidx_0=dpsidx_0, eps=temp_eps), end="\t\t\t")
 
                     # if new value is more, increase precision and reverse iteration direction
-                    if y_prev < abs(Y[0]):
+                    dydx_curr = (abs(Y[0]) - abs(Y[1]))/abs(X[0]-X[1])
+                    if dydx_prev < dydx_curr:
                         if temp_ops != 2:
                             multiplier *= 1e-1
                         multiplier *= -1
                     # update values
                     temp_eps += multiplier * step_size_eps_ini
-                    y_prev = abs(Y[0])
+                    dydx_prev = dydx_curr
 
                     if debug and not (temp_eps < eps + step_size_eps_ini and abs(multiplier) > 1e-6):
                         print("\rDebug: Maximum iterations completed for epsilon = {}.".format(eps), end="\t\t\t\n")

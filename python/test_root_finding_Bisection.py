@@ -1,4 +1,4 @@
-from modules import Bisection
+from root_finding import Bisection
 
 xi = 0.5        # initial value
 xf = 2          # final value

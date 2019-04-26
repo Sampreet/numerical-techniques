@@ -1,4 +1,4 @@
-from modules import FalsePosition
+from root_finding import FalsePosition
 import math
 
 xi = 0          # initial value
