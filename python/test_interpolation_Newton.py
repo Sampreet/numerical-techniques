@@ -1,4 +1,4 @@
-from modules import Newton
+from interpolation import Newton
 
 # given data-points and observations
 X = [1.2, 1.3, 1.4, 1.5]

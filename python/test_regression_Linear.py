@@ -1,4 +1,4 @@
-from modules import Linear
+from regression import Linear
 
 # given data-points and observations
 X = [1.0, 3.0, 4.0, 6.0, 8.0, 9.0, 11.0]

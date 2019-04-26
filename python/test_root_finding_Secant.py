@@ -1,4 +1,4 @@
-from modules import Secant
+from root_finding import Secant
 import math
 
 xi = 1          # initial value

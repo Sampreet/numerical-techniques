@@ -1,4 +1,4 @@
-from modules import GaussianElimination
+from root_finding import GaussianElimination
 import math
 
 # coefficient matrix and constant vector given by A*x = b

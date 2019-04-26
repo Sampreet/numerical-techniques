@@ -1,4 +1,4 @@
-from modules import FixedPoint
+from root_finding import FixedPoint
 
 xi = 1          # initial value
 err = 1e-6      # relative error threshold

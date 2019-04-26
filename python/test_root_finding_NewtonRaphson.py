@@ -1,4 +1,4 @@
-from modules import NewtonRaphson
+from root_finding import NewtonRaphson
 import math
 
 xi = 1          # initial value
