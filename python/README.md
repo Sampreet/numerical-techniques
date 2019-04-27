@@ -6,7 +6,7 @@ Install `Python 3.7+` using the [Anaconda Distribution](https://www.anaconda.com
 
 ## Extraction
 
-After installation, download this repository as .zip and extract it to a preferred location.
+After installation, clone this repository or download and extract it to a preferred location.
 
 Navigate to the ```python``` folder (this) inside the repository in command line or terminal (replace ```path\to``` by the location where the repository is extracted):
 ```

@@ -8,6 +8,12 @@ Functionality
 A collection of functions to find solutions of the 1-D Harmonic Oscillator model using scipy.integrate.odeint.
 Generates solutions for different values of the dimension-less energy in a given range of x.
 
+Dependencies
+------------
+* NumPy
+* SciPy
+* Matplotlib
+
 Code Improvements
 -----------------
 Update #4 (2019-04-26): Changed to derivative-based adaptation instead of value-based. Minor fixes.
