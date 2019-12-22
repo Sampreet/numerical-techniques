@@ -13,20 +13,41 @@ Navigate to the ```python``` folder (this) inside the repository in command line
 cd path\to\numerical-techniques-master\python\
 ```
 
-## Execution
+## CPU Execution
 
 The folder structure of the repository is as follows:
 
 ```
---| group_foo
-    -- __init__.py
-    -- ModuleBar.py
-    -- ...
---  test_group_foo_ModuleBar.py
---  ...
+python/
+│───modules/
+│   │───group_foo/
+│   │   │───ModuleBar/
+│   │   └───...
+│   │   
+|   └───...
+│   
+│───tests/
+│   │───group_foo/
+│   |   │───test_ModuleBar/
+│   │   └───...
+│   │   
+|   └───...
+│
+├───.gitignore
+└───README.md
 ```
 
-Execute the desired test file using (replace ```test_group_foo_ModuleBar.py``` with the test filename):
+Execute the desired test file using (replace ```group_foo``` and ```test_ModuleBar.py``` with the respective folder name and filename):
 ```
-python test_group_foo_ModuleBar.py
+python -m unittest tests\group_foo\test_ModuleBar.py
 ```
+
+To run all tests, use
+```
+python -m unittest discover tests
+```
+
+## GPU Execution
+
+A detailed guide to install PyCUDA for the GPU modules can be found in [my guide to GPU-ACCELERATED DEEP LEARNING (Keras, Theano, PyCUDA, Tensorflow)](https://github.com/Sampreet/install-guides/blob/master/languages/python/GPU-accelerated-deep-learning-Keras-Tensorflow-Theano-PyCUDA.md).
+
