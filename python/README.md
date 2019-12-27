@@ -21,14 +21,14 @@ The folder structure of the repository is as follows:
 python/
 │───modules/
 │   │───group_foo/
-│   │   │───ModuleBar/
+│   │   │───ModuleBar.py
 │   │   └───...
 │   │   
 |   └───...
 │   
 │───tests/
 │   │───group_foo/
-│   |   │───test_ModuleBar/
+│   |   │───test_ModuleBar.py
 │   │   └───...
 │   │   
 |   └───...

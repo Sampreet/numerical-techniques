@@ -21,14 +21,14 @@ The folder structure of the repository is as follows:
 fortran/
 │───modules/
 │   │───group_foo/
-│   │   │───ModuleBar/
+│   │   │───ModuleBar.f95
 │   │   └───...
 │   │   
 |   └───...
 │   
 │───tests/
 │   │───group_foo/
-│   |   │───test_ModuleBar/
+│   |   │───test_ModuleBar.f95
 │   │   └───...
 │   │   
 |   └───...
