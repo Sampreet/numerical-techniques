@@ -81,7 +81,7 @@ def find_all_roots(fn, xmin=-1e6, xmax=1e6, step=1e0, et=1e-6):
 
     Returns
     -------
-    roots, ic : list (float), int, String
+    roots, ic : list (float), int
         List of roots and the total iteration count.
     """
 

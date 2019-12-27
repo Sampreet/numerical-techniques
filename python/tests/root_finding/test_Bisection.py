@@ -43,7 +43,7 @@ class TestRootFindingBisection(unittest.TestCase):
         if root != None:
             print("\tInterval: [{xi}, {xf}]\n\t{msg}: {x}\n\tFunction Value: {fx}\n\tIterations: {ic}".format(xi=xi, xf=xf, msg=msg, x=root, fx=self.fn(root), ic=ic))
         else:
-            print("\t{msg}.".format(msg=msg))
+            print("\t{msg}".format(msg=msg))
 
     def test_find_all_roots(self):
         """Function to test find_all_roots."""
@@ -62,7 +62,7 @@ class TestRootFindingBisection(unittest.TestCase):
         if len(roots) != 0:
             print("\tAll Roots: {X}\n\tIterations: {ic}".format(X=roots, ic=ic))
         else:
-            print("\tNo root found with given initial values.")
+            print("\tNo root found with given initial values")
 
 # start tests
 if __name__ == '__main__':
