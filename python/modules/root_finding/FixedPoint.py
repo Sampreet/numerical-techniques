@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Authors: Sampreet Kalita
 # Created: 2019-03-26
-# Updated: 2019-12-22
+# Updated: 2020-01-12
 
 """Module to find roots of a function using Fixed Point Method."""
     
@@ -51,5 +51,9 @@ def find_root_uni(g, xi, et=1e-6, imax=1e6):
         xi = xnew
         if (curr_diff < max_diff):
             return xi, ic, "Approx. root found"
+        
+        # check value at xi
+        if (g(xi) == xi):
+            return xi, ic, "Root found"
 
     return xi, ic, "Root found"

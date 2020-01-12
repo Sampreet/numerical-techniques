@@ -1,24 +1,24 @@
 # Python
 
-## Installation
+## Prerequisites
 
 Install `Python 3.7+` using the [Anaconda Distribution](https://www.anaconda.com/distribution/) for the relevant operating system.
 
-## Extraction
-
 After installation, clone this repository or download and extract it to a preferred location.
 
-Navigate to the ```python``` folder (this) inside the repository in command line or terminal (replace ```path\to``` by the location where the repository is extracted):
-```
-cd path\to\numerical-techniques-master\python\
-```
-
-## CPU Execution
+## Development
 
 The folder structure of the repository is as follows:
 
 ```
 python/
+│───examples/
+│   │───group_foo/
+│   |   │───ex_ModuleBar.py
+│   │   └───...
+│   │   
+|   └───...
+│
 │───modules/
 │   │───group_foo/
 │   │   │───ModuleBar.py
@@ -37,17 +37,20 @@ python/
 └───README.md
 ```
 
-Execute the desired test file using (replace ```group_foo``` and ```test_ModuleBar.py``` with the respective folder name and filename):
+Navigate to the `python` folder (this) inside the repository in command line or terminal (replace `path\to` by the location where the repository is extracted):
 ```
-python -m unittest tests\group_foo\test_ModuleBar.py
+cd path\to\numerical-techniques-master\python\
 ```
 
-To run all tests, use
+> All subsequent operations are to be performed in this directory.
+
+To run all unittests, use
 ```
 python -m unittest discover tests
 ```
 
-## GPU Execution
-
-A detailed guide to install PyCUDA for the GPU modules can be found in [my guide to GPU-ACCELERATED DEEP LEARNING (Keras, Theano, PyCUDA, Tensorflow)](https://github.com/Sampreet/install-guides/blob/master/languages/python/GPU-accelerated-deep-learning-Keras-Tensorflow-Theano-PyCUDA.md).
+To run a specific example (replace `group_foo` and `ModuleBar` by the specific group and module names), use
+```
+python examples\group_foo\ex_ModuleBar.py
+```
 

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Authors: Sampreet Kalita
 # Created: 2019-03-26
-# Updated: 2019-12-22
+# Updated: 2020-01-12
 
 """Module to find roots of a univariate function using False Position Method."""
 
@@ -92,6 +92,10 @@ def find_all_roots(fn, xmin=-1e6, xmax=1e6, step=1e0, et=1e-6):
     roots = []
 
     while True:
+        # stop if maximum value of x is reached
+        if (xi >= xmax):
+            break
+
         # search for root in interval
         root, ii, msg = find_root_in_interval(fn, xi, xf, et)
         if root != None: 
@@ -101,13 +105,11 @@ def find_all_roots(fn, xmin=-1e6, xmax=1e6, step=1e0, et=1e-6):
         else:
             ic += 1
 
-        # stop if maximum value of x is reached
-        if (xi >= xmax):
-            break
-
         # update interval
         xi += step
         xf += step
+        if xf >= xmax:
+            xf = xmax
 
     return roots, ic
     

@@ -1,9 +1,9 @@
 ! Authors: Sampreet Kalita
-! Created: 2019-12-26
+! Created: 2020-01-02
 ! Updated: 2020-01-12
 
-module Bisection
-    ! Module to find roots of a univariate function using Bisection Method.
+module FalsePosition
+    ! Module to find roots of a univariate function using False Position Method.
     
     ! module parameters
     integer,        parameter       ::  NO_CONFIRMED_ROOT   = 0
@@ -13,7 +13,7 @@ module Bisection
 contains 
     subroutine find_root_in_interval(fn, xi_in, xf_in, et, root, ic, status)
         ! Find the (approximate) root of a univariate function in a given interval
-        ! using the Bisection Method.
+        ! using the False Position Method.
         ! 
         ! Input
         ! -----
@@ -50,7 +50,7 @@ contains
 
         ! variables
         real            ::  xi, xf
-        real            ::  xm, curr_diff, max_diff
+        real            ::  xint, curr_diff, max_diff
 
         ! output
         real,           intent(out)     ::  root
@@ -81,11 +81,11 @@ contains
             ! increment counter
             ic = ic + 1
 
-            ! get mean
-            xm = (xi + xf) / 2.0
+            ! get intersection point
+            xint = xi - fn(xi) * (xi - xf) / (fn(xi) - fn(xf))
 
             ! check relative error
-            curr_diff = abs(xm - xi)
+            curr_diff = abs(xint - xi)
             max_diff = abs(xi) * et
             if (curr_diff < max_diff) then
                 root = xi
@@ -94,15 +94,15 @@ contains
             end if
 
             ! update interval
-            if (fn(xi) * fn(xm) < 0.0) then
-                xf = xm
-            else if (fn(xm) == 0.0) then
-                xi = xm
+            if (fn(xi) * fn(xint) < 0.0) then
+                xf = xint
+            else if (fn(xint) == 0.0) then
+                xi = xint
                 root = xi
                 status = FOUND_ROOT
                 return
             else 
-                xi = xm
+                xi = xint
             end if
         end do
         
@@ -112,7 +112,7 @@ contains
 
     subroutine find_all_roots(fn, xmin, xmax, step, et, roots, ic)
         ! Find the (approximate) roots of a univariate function in a given interval
-        ! using the Bisection Method.
+        ! using the False Position Method.
         ! 
         ! Input
         ! -----
@@ -207,4 +207,4 @@ contains
         ! formatting for outputs
         10  format(T8, A, ' in [', F0.6, ', ', F0.6, '] : ', F0.6)
     end subroutine find_all_roots
-end module Bisection
+end module FalsePosition
