@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Authors: Sampreet Kalita
 # Created: 2019-03-26
-# Updated: 2019-12-22
+# Updated: 2020-01-12
 
 """Module to test root_finding -> Secant module."""
 
@@ -43,7 +43,7 @@ class TestRootFindingSecant(unittest.TestCase):
 
         # output
         if root != None:
-            print("\tInitial value: {xi}\n\tRoot: {x}\n\tFunction Value: {fx}\n\tIterations: {ic}".format(xi=xi, x=root, fx=self.fn(root), ic=ic))
+            print("\tInitial values: {xi} and {xf}\n\tRoot: {x}\n\tFunction Value: {fx}\n\tIterations: {ic}".format(xi=xi, xf=xf, x=root, fx=self.fn(root), ic=ic))
         else:
             print("\t{msg}.".format(msg=msg))
 

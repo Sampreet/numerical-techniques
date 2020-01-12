@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Authors: Sampreet Kalita
 # Created: 2019-03-26
-# Updated: 2019-12-22
+# Updated: 2020-01-12
 
 """Module to find roots of a function using Newton-Raphson Method."""
 
@@ -37,7 +37,7 @@ def find_root_uni(fn, df, xi, et=1e-6, imax=1e6):
 
     # check initial values
     if (fn(xi) == 0):
-        return xi, ic, None
+        return xi, ic, "Root found"
 
     # iterate till maximum iteration is reached or relative error reaches threshold
     while True: 
@@ -59,9 +59,13 @@ def find_root_uni(fn, df, xi, et=1e-6, imax=1e6):
         max_diff = abs(xi) * et
         xi = xint
         if (curr_diff < max_diff):
-            return xi, ic, None
+            return xi, ic, "Approx. root found"
+        
+        # check value at xi
+        if (fn(xi) == 0):
+            return xi, ic, "Root found"
 
-    return xi, ic, None
+    return xi, ic, "Root found"
 
 def find_root_multi(Fn, Dn, X, em=1, imax=1e6):
     """

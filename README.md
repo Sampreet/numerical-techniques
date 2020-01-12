@@ -1,6 +1,6 @@
 # Numerical Techniques
 
-> A collection of numerical methods for simulations in Phyiscs.
+> A multi-language collection of numerical methods for simulations in Phyiscs.
 
 ## Executing the Codes
 

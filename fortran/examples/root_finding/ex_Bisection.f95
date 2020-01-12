@@ -1,14 +1,14 @@
 ! Authors: Sampreet Kalita
 ! Created: 2019-12-26
-! Updated: 2019-12-27
+! Updated: 2020-01-12
 
-module func
+module func_Bisection
     ! Module for the demo univariate function for testing.
 
 contains 
     real function fn(x) result(fx)
         ! Demo univariate function for testing.
-        
+        !
         ! Input
         ! -----
         ! x : real
@@ -25,30 +25,32 @@ contains
         ! function
         fx = x**3 + 94*x**2 - 389*x + 294
     end function fn
-end module func
+end module func_Bisection
 
 program main
     ! Program to test root_finding -> Bisection module.
 
     ! modules
     use Bisection
-    use func
+    use func_Bisection
 
     implicit none
-    ! constants
-    real    ::  xi      = 5e-1, &
-                xf      = 2e0, &
-                et      = 1e-4, &
-                xmin    = -1e3, &
-                xmax    = 1e3, &
-                step    = 1e0
-    ! variables
-    real,                           allocatable     ::  root
-    real,           dimension(:),   allocatable     ::  roots
-    integer,                        allocatable     ::  ic, status
-    character(:),                   allocatable     ::  msg
 
-    ! test find_root_in_interval
+    ! constants
+    real            ::  xi      = 5e-1, &
+                        xf      = 2e0, &
+                        et      = 1e-4, &
+                        xmin    = -1e3, &
+                        xmax    = 1e3, &
+                        step    = 1e0
+
+    ! variables
+    real            ::  root
+    real,           dimension(:),   allocatable     ::  roots
+    integer         ::  ic, status
+    character(:),   allocatable     ::  msg
+
+    ! call function
     write(*, 10) 'Bisection Method: Root in Interval'
     call find_root_in_interval(fn, xi, xf, et, root, ic, status)
 
@@ -63,13 +65,13 @@ program main
     end select
 
     ! display
-    if (status /= 0) then
+    if (status == FOUND_ROOT .or. status == FOUND_APPROX_ROOT) then
         write(*, 20) xi, xf, msg, root, fn(root), ic 
     else
         write(*, 30) msg, xi, xf
     end if
 
-    ! test find_all_roots
+    ! call function
     write(*, 10) 'Bisection Method: All Roots'
     call find_all_roots(fn, xmin, xmax, step, et, roots, ic)
 

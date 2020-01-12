@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Authors: Sampreet Kalita
 # Created: 2019-03-26
-# Updated: 2019-12-22
+# Updated: 2020-01-12
 
 """Module to find roots of a univariate function using Secant Method."""
     
@@ -60,5 +60,9 @@ def find_root_uni(fn, xi, xf, et=1e-6, imax=1e6):
         xf = xint
         if (curr_diff < max_diff):
             return xf, ic, "Approx. root found"
+        
+        # check value at xf
+        if (fn(xf) == 0):
+            return xf, ic, "Root found"
 
     return xi, ic, "Root found"
