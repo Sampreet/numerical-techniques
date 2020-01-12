@@ -32,7 +32,7 @@ fortran/
 
 Navigate to the `fortran` folder (this) inside the repository in command line or terminal (replace `path\to` by the location where the repository is extracted):
 ```
-cd path\to\numerical-techniques-master\fortran\
+cd path\to\numerical-techniques-master\fortran
 ```
 
 > All subsequent operations are to be performed in this directory.

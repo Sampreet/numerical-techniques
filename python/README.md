@@ -39,7 +39,7 @@ python/
 
 Navigate to the `python` folder (this) inside the repository in command line or terminal (replace `path\to` by the location where the repository is extracted):
 ```
-cd path\to\numerical-techniques-master\python\
+cd path\to\numerical-techniques-master\python
 ```
 
 > All subsequent operations are to be performed in this directory.
