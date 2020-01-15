@@ -2,17 +2,17 @@
 # -*- coding: utf-8 -*-
 # Authors: Sampreet Kalita
 # Created: 2019-04-07
-# Updated: 2019-12-22
+# Updated: 2020-01-15
 
-"""Module to test root_finding -> GaussJordan module."""
+"""Module to test root_finding -> GaussJordanElimination module."""
 
 # dependencies
 import unittest
 
-from modules.root_finding import GaussJordan
+from modules.root_finding import GaussJordanElimination
 
 class TestRootFindingGaussJordan(unittest.TestCase):
-    """Tests for root_finding -> GaussJordan module."""
+    """Tests for root_finding -> GaussJordanElimination module."""
 
     def test_find_inverse(self):
         """Function to test find_inverse."""
@@ -23,7 +23,7 @@ class TestRootFindingGaussJordan(unittest.TestCase):
         A = [[4, 1, 0], [5, -2, 4], [-2, 1, 1]]
 
         # function
-        Ainv, ops, msg = GaussJordan.find_inverse(A)
+        Ainv, ops, msg = GaussJordanElimination.find_inverse(A)
 
         # output
         if Ainv != None:
