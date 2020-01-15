@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Authors: Sampreet Kalita
 # Created: 2019-04-07
-# Updated: 2019-12-22
+# Updated: 2020-01-16
 
 """Module to test root_finding -> GaussianElimination module."""
 
@@ -14,8 +14,8 @@ from modules.root_finding import GaussianElimination
 class TestRootFindingGaussianElimination(unittest.TestCase):
     """Tests for root_finding -> GaussianElimination module."""
 
-    def test_find_root_using_upper_triangle(self):
-        """Function to test find_root_using_upper_triangle."""
+    def test_find_root_basic(self):
+        """Function to test find_root_basic."""
 
         print("\nGaussian Elimination Method: Upper-Triangular")
 
@@ -24,7 +24,7 @@ class TestRootFindingGaussianElimination(unittest.TestCase):
         b = [3, -1, 2, -4]
 
         # function
-        root, ops, msg = GaussianElimination.find_root_using_upper_triangle(A, b)
+        root, ops, msg = GaussianElimination.find_root_basic(A, b, False)
 
         # output
         if root != None:

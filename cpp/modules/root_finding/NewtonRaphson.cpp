@@ -16,7 +16,7 @@ const int NewtonRaphson::FOUND_APPROX_ROOT  = 2;
 const int NewtonRaphson::MAX_ITER_REACHED   = 3;
 const int NewtonRaphson::DERIVATIVE_ZERO    = 4;
 
-/*
+/**
  * Find the (approximate) root of a univariate function
  * using the Newton-Raphson Method.
  *  
