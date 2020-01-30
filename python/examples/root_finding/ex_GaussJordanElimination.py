@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Authors: Sampreet Kalita
 # Created: 2020-01-15
-# Updated: 2020-01-15
+# Updated: 2020-01-30
 
 """Example code to use root_finding -> GaussJordanElimination module."""
 
@@ -23,10 +23,28 @@ A = [[2.0, 1.0, 7.0], [3.0, 2.0, 1.0], [1.0, 3.0, 0.0]]
 b = [15.0, 14.0, 9.0]
 
 # function
-root, ops, msg = GaussJordanElimination.find_root_basic(A, b, True)
+root, ops, msg = GaussJordanElimination.get_solution_basic(A, b, True)
 
 # output
 if root != None:
-    print("\tRoot: {x}\n\tElement-wise Operations: {ops}".format(x=root, ops=ops))
+    print("\n\tRoot: {x}\n\tElement-wise Operations: {ops}".format(x=root, ops=ops))
 else:
-    print("\t{msg}.\n\tElement-wise Operations: {ops}".format(msg=msg, ops=ops))
+    print("\n\t{msg}.\n\tElement-wise Operations: {ops}".format(msg=msg, ops=ops))
+
+# Inverse function
+print("\nGauss-Jordan Elimination Method: Inverse")
+
+A = [[      1,      2,      3,      4,      5,      6   ],
+    [       7,      2,      8,      9,      10,     11  ],
+    [       12,     13,     3,      14,     15,     16  ],
+    [       17,     18,     19,     4,      20,     21  ],
+    [       22,     23,     24,     25,     5,      26  ],
+    [       27,     28,     29,     30,     31,     6   ]]
+
+Ainv, ops, msg = GaussJordanElimination.get_inverse(A, True)
+
+# output
+if Ainv != None:
+    print("\n\tInverse: {M}\n\tElement-wise Operations: {ops}".format(M=Ainv, ops=ops))
+else:
+    print("\n\t{msg}.\n\tElement-wise Operations: {ops}".format(msg=msg, ops=ops))

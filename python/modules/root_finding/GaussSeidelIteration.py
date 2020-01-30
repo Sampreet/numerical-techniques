@@ -1,0 +1,131 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# Authors: Sampreet Kalita
+# Created: 2020-01-30
+# Updated: 2020-01-30
+
+"""Module to obtain solutions of a system of linear equations using Gauss-Seidel Iteration Method."""
+
+# dependencies
+import math
+
+def get_solution_basic(A, b, x, lamb, imax, et, debug):
+    """
+    Obtain the solution for a given system of linear equations represented as A*x = b using Gauss-Seidel Iteration Method.
+
+    Parameters
+    ----------
+    A : list
+        Given coefficient matrix.
+    b : list
+        Given constant vector.
+    x : list
+        Initial values of the variables.
+    lamb: float
+        Value of the weight.
+    imax : int
+        Maximum number of iterations.
+    et : float
+        Relative error threshold.
+    debug : boolean
+        Option to display steps.
+
+    Returns
+    -------
+    sol, ops, msg : float, int, String
+        The solution and the operation count with status string.
+    """
+
+    # initialize values
+    ops = 0                             # number of operations
+    dim = len(b)                        # number of variables
+    ic = 0                              # iteration counter
+
+    # display
+    if debug:
+        print("Input\n-------")
+        print("Matrix A:\t{A}".format(A=A))
+        print("Vector b:\t{B}".format(B=b))
+        print("Vector x:\t{x}".format(x=x))
+
+    # for each row
+    for i in range(dim):
+        divisor = A[i][i]
+
+        # if diagonal element is zero
+        if divisor == 0:
+            return None, ops, "Diagonal element is zero"
+
+        # divide by diagonal element
+        for j in range(dim):
+            A[i][j] /= divisor
+        
+        b[i] /= divisor
+
+        # update operations
+        ops += dim + 1
+
+    # initial iteration
+    for i in range(dim):
+        temp = b[i]
+        for j in range(dim):
+            if not i==j :
+                temp -= A[i][j]*x[j]
+        # update solution
+        x[i] = temp
+
+    # update operations
+    ops += dim - 1
+    
+    # update iteration count
+    ic = 1
+
+    # display
+    if debug:
+        print("\nIteration #{ic}\n-------------------".format(ic=ic))
+        print("Vector x:\t{x}".format(x=x))
+
+    while(True):
+        # flag to check if relative error threshold is reached
+        flag = 1
+
+        # for each variable
+        for i in range(dim):
+            prev = x[i]
+
+            # get new value
+            curr = b[i]
+            for j in range(dim):
+                if i != j :
+                    curr -= A[i][j]*x[j]
+
+            # update solution with weight
+            x[i] = lamb*curr + (1 - lamb)*prev
+
+            # update operations
+            ops += dim - 1 + 2
+
+            # check relative error
+            if flag == 1 and x[i] != 0:
+                if abs((x[i] - prev)/x[i]) > et:
+                    flag = 0
+        
+        # update iteration count
+        ic += 1
+
+        # display
+        if debug:
+            print("\nIteration #{ic}\n-------------------".format(ic=ic))
+            print("Vector x:\t{x}".format(x=x))
+
+        # check iteration threshold
+        if ic > imax:
+            return x, ops, "Maximum iterations reached"     
+
+        # check flag
+        if flag == 1:
+            return x, ops, "Approx. solution obtained"    
+
+
+
+            

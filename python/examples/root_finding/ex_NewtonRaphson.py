@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Authors: Sampreet Kalita
 # Created: 2020-01-12
-# Updated: 2020-01-12
+# Updated: 2020-01-30
 
 """Example code to use root_finding -> NewtonRaphson module."""
 
@@ -71,6 +71,6 @@ root, ic, msg = NewtonRaphson.find_root_uni(fn, df, xi, et, imax)
 
 # output
 if root != None:
-    print("\tInitial value: {xi}\n\tRoot: {x}\n\tFunction value: {fx}\n\tIterations: {ic}".format(xi=xi, x=root, fx=fn(root), ic=ic))
+    print("\n\tInitial value: {xi}\n\tRoot: {x}\n\tFunction value: {fx}\n\tIterations: {ic}".format(xi=xi, x=root, fx=fn(root), ic=ic))
 else:
-    print("\t{msg}.".format(msg=msg))
+    print("\n\t{msg}.".format(msg=msg))

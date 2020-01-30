@@ -2,120 +2,160 @@
 # -*- coding: utf-8 -*-
 # Authors: Sampreet Kalita
 # Created: 2019-04-07
-# Updated: 2019-12-22
+# Updated: 2020-01-30
 
-"""Module to find solutions of a system of linear equations using LU Decomposition Method."""
+"""Module to obtain solutions of a system of linear equations using LU Decomposition Method."""
 
 # dependencies
-import numpy as np
+import math
 
-def get_LU_with_ones_in_L(a):
+def get_solution_L(L, b, debug):
     """
-    Find the Lower-Triangular and Upper-Triangular matrices of a given matrix.
+    Obtain the solution for the Lower-Triangular matrix.
 
     Parameters
     ----------
-    a : numpy.array
-        Given coefficient matrix.
-
-    Returns
-    -------
-    l, u, ops : numpy.array, numpy.array, int
-        The lower-triangular and upper-triangular matrices along with the operation count.
-    """
-
-    # initialize values
-    ops = 0                             # number of operations
-    dim = len(a)                        # number of variables
-    l = np.eye(dim)                     # lower-triangular matrix
-    u = np.eye(dim)                     # upper-triangular matrix
-
-    for i in range(0, dim):
-        # find the elements in each column i of U
-        for j in range(0, i + 1):
-            prod_sum = 0
-            for k in range (0, j):
-                prod_sum += l[j][k] * u[k][i]
-                ops += 1
-            u[j][i] = a[j][i] - prod_sum
-            ops += 1
-
-        # find the elements in each column i of L
-        for j in range(i + 1, dim):
-            prod_sum = 0
-            for k in range (0, i):
-                prod_sum += l[j][k] * u[k][i]
-                ops += 1
-            l[j][i] = (a[j][i] - prod_sum) / u[i][i]
-            ops += 1
-
-    return l, u, ops
-
-def get_root_of_L(l, b):
-    """
-    Find the root of the Lower-Triangular matrix.
-
-    Parameters
-    ----------
-    l : numpy.array
+    L : list
         Lower-triangular matrix
+    debug : boolean
+        Option to display steps.
 
     Returns
     -------
-    y, ops : numpy.array, int
-        The root with the operation count.
+    y, ops : list, int
+        The solution with the operation count.
     """
 
     # initialize values
     ops = 0                             # number of operations
     dim = len(b)                        # number of variables
-    y = np.zeros(dim, dtype=np.float)   # the root array
+    y = [0 for i in range(dim)]         # the solution array
 
-    for i in range(0, dim):
+    for i in range(dim):
         # multiply matrix rows and substitute elements of y
         prod_sum = 0
-        for j in range(0, i):
-            prod_sum += l[i][j] * y[j]
+        for j in range(i):
+            prod_sum += L[i][j] * y[j]
+                
+            # update operations
             ops += 1
-        y[i] = (b[i] - prod_sum) / l[i][i]
+        y[i] = (b[i] - prod_sum) / L[i][i]
+                
+        # update operations
         ops += 1
+
+    # display
+    if debug:
+        print("\nSolution of L\n-------------------")
+        print("Vector y:\t{y}".format(y=y))
 
     return y, ops
     
-def get_root_of_U(u, y):
+def get_solution_U(U, y, debug):
     """
-    Find the root of the Upper-Triangular matrix.
+    Obtain the solution for the Upper-Triangular matrix.
 
     Parameters
     ----------
-    u : numpy.array
+    U : list
         Upper-triangular matrix
+    debug : boolean
+        Option to display steps.
 
     Returns
     -------
-    x, ops : numpy.array, int
-        The root with the operation count.
+    x, ops : list, int
+        The solution with the operation count.
     """
 
     # initialize values
     ops = 0                             # number of operations
     dim = len(y)                        # number of variables
-    x = np.zeros(dim, dtype=np.float)   # the root array
+    x = [0 for i in range(dim)]         # the solution array
 
-    for i in range(0, dim):
+    for i in range(dim):
         # multiply matrix rows and back-substitute elements of x
         prod_sum = 0
-        for j in range(0, i):
-            prod_sum += u[dim - 1 - i][dim - 1 - j] * x[dim - 1 - j]
+        for j in range(i):
+            prod_sum += U[dim - 1 - i][dim - 1 - j] * x[dim - 1 - j]
             ops += 1
-        x[dim - 1 - i] = (y[dim - 1 - i] - prod_sum) / u[dim - 1 - i][dim - 1 - i]
+        x[dim - 1 - i] = (y[dim - 1 - i] - prod_sum) / U[dim - 1 - i][dim - 1 - i]
+                
+        # update operations
         ops += 1
+
+    # display
+    if debug:
+        print("\nSolution of U\n-------------------")
+        print("Vector x:\t{x}".format(x=x))
 
     return x, ops
 
-def find_root_with_ones_in_L(A, b):
+def get_LU_basic_OnesInL(A, debug):
     """
-    Find the roots of a given system of linear equations represented as A*x = b using LU Decomposition Method with 1s in L.
+    Obtain the Lower-Triangular and Upper-Triangular matrices of a given matrix using Basic LU Decomposition with ones in L.
+
+    Parameters
+    ----------
+    A : list
+        Given coefficient matrix.
+    debug : boolean
+        Option to display steps.
+
+    Returns
+    -------
+    L, U, ops : list, list, int
+        The lower-triangular and upper-triangular matrices along with the operation count.
+    """
+
+    # initialize values
+    ops = 0                             # number of operations
+    dim = len(A)                        # number of variables
+    # lower-triangular matrix
+    L = [[1 if i==j else 0 for j in range(dim)] for i in range(dim)]
+    # upper-triangular matrix
+    U = [[1 if i==j else 0 for j in range(dim)] for i in range(dim)]                    
+    # for each column
+    for j in range(dim):
+        # find the elements in each row of U
+        for i in range(j + 1):
+            prod_sum = 0
+            for k in range (i):
+                prod_sum += L[i][k] * U[k][j]
+
+                # update operations
+                ops += 1
+
+            U[i][j] = A[i][j] - prod_sum
+                
+            # update operations
+            ops += 1
+
+        # find the elements in each row of L
+        for i in range(j + 1, dim):
+            prod_sum = 0
+            for k in range (j):
+                prod_sum += L[i][k] * U[k][j]
+
+                # update operations
+                ops += 1
+
+            L[i][j] = (A[i][j] - prod_sum) / U[j][j]
+                
+            # update operations
+            ops += 1
+
+        # display
+        if debug:
+            print("\nFormation step #{j}\n-------------------".format(j=j))
+            print("Matrix L:\t{L}".format(L=L))
+            print("Matrix U:\t{U}".format(U=U))
+
+    return L, U, ops
+
+def get_solution_basic(A, b, debug):
+    """
+    Obtain the solution for a given system of linear equations represented as A*x = b using Basic LU Decomposition Method.
 
     Parameters
     ----------
@@ -123,23 +163,135 @@ def find_root_with_ones_in_L(A, b):
         Given coefficient matrix.
     b : list (float)
         Given constant vector.
+    debug : boolean
+        Option to display steps.
 
     Returns
     -------
-    root, ops, msg : list (float), int, String
-        The root and the operation count with error string.
+    sol, ops, msg : list (float), int, String
+        The solution and the operation count with error string.
     """
 
     # initialize values
     t_ops = 0                           # total number of operations
-    a = np.array(A, dtype=np.float)     # coefficient matrix as numpy array
-    b = np.array(b, dtype=np.float)     # coefficient matrix as numpy array
 
-    l, u, ops = get_LU_with_ones_in_L(a)
+    # display
+    if debug:
+        print("Input\n-------")
+        print("Matrix A:\t{A}".format(A=A))
+        print("Vector b:\t{B}".format(B=b))
+
+    # get L and U
+    L, U, ops = get_LU_basic_OnesInL(A, debug)
     t_ops += ops
-    y, ops = get_root_of_L(l, b)
+    # get solution of L
+    y, ops = get_solution_L(L, b, debug)
     t_ops += ops
-    x, ops = get_root_of_U(u, y)
+    # get solution of U
+    x, ops = get_solution_U(U, y, debug)
     t_ops += ops
 
-    return x.tolist(), t_ops, None
+    return x, t_ops, "Solution obtained"
+
+def get_LU_Cholesky(A, debug):
+    """
+    Obtain the Lower-Triangular matrix of a symmetric positive definitive matrix using Cholesky Decomposition.
+
+    Parameters
+    ----------
+    A : list
+        Given matrix.
+    debug : boolean
+        Option to display steps.
+
+    Returns
+    -------
+    L, U, ops : list, list, int
+        The lower-triangular and upper-triangular matrices along with the operation count.
+    """
+
+    # initialize values
+    ops = 0                             # number of operations
+    dim = len(A)                        # number of variables
+    # lower-triangular matrix
+    L = [[0 for j in range(dim)] for i in range(dim)]
+
+    # for each row
+    for k in range(dim):
+        # for each element of the row other than the k-th element
+        for i in range(k):
+            prod_sum = 0
+            # find the sum of previous elements of that row 
+            # multiplied by previous elements of k-th row
+            for j in range(i):
+                prod_sum += L[i][j]*L[k][j]
+
+                # update operations
+                ops += 1
+
+            # update that element
+            L[k][i] = (A[k][i] - prod_sum)/L[i][i]
+
+            # update operations 
+            ops += 2
+
+        sq_sum = 0
+        # find the sum of squares of elements in the k-th row
+        # other than the k-th element 
+        for j in range(k):
+            sq_sum += L[k][j]**2
+
+            # update operations 
+            ops += 1
+        
+        # update the k-th element
+        L[k][k] = math.sqrt(A[k][k] - sq_sum)
+
+    # display
+    if debug:
+        print("Matrix L:\t{L}".format(L=L))
+
+    # upper-triangular matrix
+    U = [[L[j][i] for j in range(dim)] for i in range(dim)]
+
+    return L, U, ops
+
+def get_solution_Cholesky(A, b, debug):
+    """
+    Obtain the solution for a given system of linear equations represented as A*x = b where A is a symmetric positive definite matrix using Cholesky Decomposition.
+
+    Parameters
+    ----------
+    A : list (list (float))
+        Given matrix.
+    b : list (float)
+        Given constant vector.
+    debug : boolean
+        Option to display steps.
+
+    Returns
+    -------
+    sol, ops, msg : list (float), int, String
+        The solution and the operation count with error string.
+    """
+
+    # initialize values
+    t_ops = 0                           # total number of operations
+
+    # display
+    if debug:
+        print("Input\n-------")
+        print("Matrix A:\t{A}".format(A=A))
+        print("Vector b:\t{B}".format(B=b))
+
+    # get L and U
+    L, U, ops = get_LU_Cholesky(A, debug)
+    t_ops += ops
+    # get solution of L
+    y, ops = get_solution_L(L, b, debug)
+    t_ops += ops
+    # get solution of U
+    x, ops = get_solution_U(U, y, debug)
+    t_ops += ops
+
+    return x, t_ops, "Solution obtained"

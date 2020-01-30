@@ -4,11 +4,11 @@
 # Created: 2019-04-07
 # Updated: 2020-01-14
 
-"""Module to find solutions of a system of linear equations using Gaussian Elimination Method."""
+"""Module to obtain solutions of a system of linear equations using Gaussian Elimination Method."""
 
-def find_root_basic(A, b, debug):
+def get_solution_basic(A, b, debug):
     """
-    Find the root of a given system of linear equations represented as A*x = b using Upper-Triangular Gaussian Elimination Method.
+    Obtain the solution for a given system of linear equations represented as A*x = b using Upper-Triangular Gaussian Elimination Method.
 
     Parameters
     ----------
@@ -21,8 +21,8 @@ def find_root_basic(A, b, debug):
 
     Returns
     -------
-    root, ops, msg : float, int, String
-        The root and the operation count with error string.
+    sol, ops, msg : float, int, String
+        The solution and the operation count with status string.
     """
 
     # initialize values
@@ -62,7 +62,7 @@ def find_root_basic(A, b, debug):
             print("Matrix A:\t{A}".format(A=A))
             print("Vector b:\t{b}".format(b=b))
 
-    # find root by reverse substitution
+    # obtain solution by reverse substitution
     for i in range(0, dim):
         for j in range(dim - i, dim):
             b[dim - 1 - i] -= A[dim - 1 - i][j] * b[j]
@@ -95,9 +95,9 @@ def find_root_basic(A, b, debug):
 
     return b, ops, "Solution obtained"
 
-def find_root_pivot(A, B, debug):
+def get_solution_pivot(A, B, debug):
     """
-    Find the root of a given system of linear equations represented as A*X = B using Upper-Triangular Gaussian Elimination Method.
+    Obtain the solution for a given system of linear equations represented as A*X = B using Upper-Triangular Gaussian Elimination Method.
 
     Parameters
     ----------
@@ -110,8 +110,8 @@ def find_root_pivot(A, B, debug):
 
     Returns
     -------
-    root, ops, msg : float, int, String
-        The root and the operation count with error string.
+    sol, ops, msg : float, int, String
+        The solution and the operation count with status string.
     """
 
     # initialize values
@@ -213,7 +213,7 @@ def find_root_pivot(A, B, debug):
             print("Matrix A:\t{A}".format(A=A))
             print("Matrix B:\t{B}".format(B=B))
 
-    # find root by reverse substitution
+    # obtain solution by reverse substitution
     for i in range(0, dim_x):
         for k in range(0, dim_n):
             for j in range(dim_x - i, dim_x):
