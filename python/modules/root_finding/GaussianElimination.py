@@ -149,7 +149,7 @@ def get_solution_pivot(A, B, debug):
                 return None, ops, "Martix is singular"  
             
             # update scales
-            scales.append(A[i][j]/maxi_i)
+            scales.append(abs(A[i][j])/maxi_i)
 
             # update operations
             ops += dim_x
